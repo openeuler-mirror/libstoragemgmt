@@ -98,7 +98,7 @@ smis generic aaray for libstoragemgmt.
 %package        netapp-plugin
 Summary:        netapp files for libstoragemgmt
 BuildArch:      noarch
-Requires:       python3-%{name} = %{version}
+Requires:       python3-%{name} = %{version} python3-%{name} = %{version}-%{release}
 Requires(post): python3-%{name} = %{version}
 Requires(postun): python3-%{name} = %{version}
 Provides:       %{name}-targetd-plugin = %{version}-%{release}
