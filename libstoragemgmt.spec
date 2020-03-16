@@ -1,7 +1,8 @@
 %global py2_build_dir %{_builddir}/%{name}-%{version}-%{release}-python2
+%define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	1
+Release:	2
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -14,7 +15,7 @@ BuildRequires:  openssl-devel glib2-devel systemd bash-completion libconfig-deve
 BuildRequires:  procps sqlite-devel python3-six python3-devel systemd systemd-devel chrpath valgrind
 %{?systemd_requires}
 	
-%if %{with python2}
+%if 0%{?with_python2}
 BuildRequires:  python2-six python2-devel
 %endif
 
@@ -34,7 +35,7 @@ Requires:       %{name} = %{version}-%{release}
 %description    devel
 Header files for libstoragemgmt
 
-%if %{with python2}
+%if 0%{?with_python2}
 %package        -n python2-%{name}
 Summary:        python2 for libstoragemgmt
 Requires:       %{name} = %{version}-%{release} python2-libstoragemgmt-clibs
@@ -83,7 +84,7 @@ python3 for libstoragemgmt-clibs
 Summary:        smis generic aaray for libstoragemgmt
 BuildArch:      noarch
 BuildRequires:  python3-pywbem	
-%if %{with python2}
+%if 0%{?with_python2}
 BuildRequires:  python2-pywbem
 %endif 
 Requires:       python3-pywbem python3-%{name} = %{version}-%{release}
@@ -150,7 +151,7 @@ clibs package for nfs-plugi
 
 %build
 ./autogen.sh
-%if %{with python2}	
+%if 0%{?with_python2}	
 rm -fr %{py2_build_dir}
 cp -a . %{py2_build_dir}
 %endif
@@ -158,7 +159,7 @@ cp -a . %{py2_build_dir}
 %configure --with-python3
 %make_build 
 
-%if %{with python2}
+%if 0%{?with_python2}	
 pushd %{py2_build_dir}
 %configure 
 %make_build
@@ -166,7 +167,7 @@ popd
 %endif
 
 %install
-%if %{with python2}
+%if 0%{?with_python2}	
 pushd %{py2_build_dir}
 %make_install 
 rm -rf %{buildroot}/%{python_sitelib}/lsm/plugin
@@ -189,7 +190,7 @@ then
   exit 1
 fi
 
-%if %{with python2}
+%if 0%{?with_python2}	
 pushd %{py2_build_dir}
 if ! make check
 then
@@ -278,7 +279,7 @@ fi
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/%{name}.pc
 
-%if %{with python2}
+%if 0%{?with_python2}	
 %files        -n python2-%{name}
 %defattr(-,root,root)	
 %dir %{python_sitelib}/lsm
@@ -368,5 +369,8 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Mon Mar 16 2020 gulining<gulining1@huawei.com> - 1.8.0-2
+- remove python2
+
 * Sat Nov 9 2019 openEuler Buildteam <buildteam@openeuler.org> - 1.8.0-1
 - Package init
