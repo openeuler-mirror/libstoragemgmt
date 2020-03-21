@@ -2,7 +2,7 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	2
+Release:	3
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -20,6 +20,7 @@ BuildRequires:  python2-six python2-devel
 %endif
 
 Requires:	python3-libstoragemgmt
+Obsoletes:      python2-libstoragemgmt python2-libstoragemgmt-clibs
 
 %description
 The libStorageMgmt library will provide a vendor agnostic open source storage
@@ -99,7 +100,7 @@ smis generic aaray for libstoragemgmt.
 %package        netapp-plugin
 Summary:        netapp files for libstoragemgmt
 BuildArch:      noarch
-Requires:       python3-%{name} = %{version} python3-%{name} = %{version}-%{release}
+Requires:       python3-%{name} = %{version}
 Requires(post): python3-%{name} = %{version}
 Requires(postun): python3-%{name} = %{version}
 Provides:       %{name}-targetd-plugin = %{version}-%{release}
@@ -369,6 +370,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Sat Mar 21 2020 songshuaishuai <songshuaishuai2@huawei.com> - 1.8.0-3
+- fix update error 
+
 * Mon Mar 16 2020 gulining<gulining1@huawei.com> - 1.8.0-2
 - remove python2
 
