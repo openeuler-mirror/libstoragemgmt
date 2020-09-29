@@ -2,11 +2,11 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	4
+Release:	5
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
-Source0:	https://github.com/libstorage/libstoragemgmt/archive/%{name}-%{version}.tar.gz
+Source0:	https://github.com/libstorage/libstoragemgmt/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 Patch1:         0001-change-run-dir.patch
 
@@ -370,6 +370,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Tue Sep 29 2020 baizhonggui <baizhonggui@huawei.com> - 1.8.0-5
+- Modify source0
+
 * Tue Aug 18 2020 wenzhanli<wenzhanli2@huawei.com> - 1.8.0-4
 - add release version for update
 
