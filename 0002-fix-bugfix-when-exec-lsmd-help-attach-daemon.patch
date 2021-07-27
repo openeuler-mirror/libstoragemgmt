@@ -1,0 +1,51 @@
+From 53593fddd4a243c6eb38794d1a4416db11bd5ec2 Mon Sep 17 00:00:00 2001
+From: Wu Bo <wubo40@huawei.com>
+Date: Tue, 2 Jun 2020 11:49:10 +0800
+Subject: [PATCH] fix bugfix when exec lsmd help attach daemon
+
+$ lsmd --help
+libStorageMgmt plug-in daemon.
+lsmd [--plugindir <directory>] [--socketdir <dir>] [-v] [-d]
+     --plugindir = The directory where the plugins are located
+     --socketdir = The directory where the Unix domain sockets will be created
+     --confdir   = The directory where the config files are located
+     -v          = Verbose logging
+     -d          = New style daemon (systemd)
+$ ps -ef | grep lsmd
+libstor+   1366      1  0 Sep23 ?        00:00:00 /usr/bin/lsmd -d
+
+Signed-off-by: Wu Bo <wubo40@huawei.com>
+---
+ daemon/lsm_daemon.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/daemon/lsm_daemon.c b/daemon/lsm_daemon.c
+index dc4df3b..65e337d 100644
+--- a/daemon/lsm_daemon.c
++++ b/daemon/lsm_daemon.c
+@@ -829,6 +829,11 @@ int main(int argc, char *argv[])
+             break;
+         }
+
++        if (c == 'h') {
++            usage();
++            return EXIT_SUCCESS;
++        }
++
+         switch (c) {
+         case 0:
+             switch (option_index) {
+@@ -844,10 +849,6 @@ int main(int argc, char *argv[])
+             }
+             break;
+
+-        case 'h':
+-            usage();
+-            break;
+-
+         case 'v':
+             verbose_flag = 1;
+             break;
+-- 
+1.8.3.1
+
