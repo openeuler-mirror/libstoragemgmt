@@ -2,13 +2,14 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	5
+Release:	6
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
 Source0:	https://github.com/libstorage/libstoragemgmt/releases/download/%{version}/%{name}-%{version}.tar.gz
 
 Patch1:         0001-change-run-dir.patch
+Patch2:		0002-fix-bugfix-when-exec-lsmd-help-attach-daemon.patch
 
 BuildRequires:	gcc gcc-c++ autoconf automake libtool libxml2-devel check-devel perl-interpreter
 BuildRequires:  openssl-devel glib2-devel systemd bash-completion libconfig-devel systemd-devel
@@ -370,6 +371,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Tue Jul 27 2021 yannglongkang <yanglongkang@huawei.com> - 1.8.0-6
+- fix bugfix when exec lsmd help attach daemon
+
 * Tue Sep 29 2020 baizhonggui <baizhonggui@huawei.com> - 1.8.0-5
 - Modify source0
 
