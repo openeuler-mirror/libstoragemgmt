@@ -2,7 +2,7 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	5
+Release:	6
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -372,6 +372,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Fri Jan 28 2022 wulei <wulei80@huawei.com> - 1.8.0-6
+- fix too many argument for format
+
 * Mon Apr 25 2022 xigaoxinyan <xigaoxinyan@h-partners.com> - 1.8.0-5
 - fix too many argument for format and libstoragemgmt: Upstream patch to avoid char usage in libstoragemgmt.
 
