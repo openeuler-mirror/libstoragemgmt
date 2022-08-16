@@ -2,7 +2,7 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	5
+Release:	6
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -10,6 +10,7 @@ Source0:	https://github.com/libstorage/libstoragemgmt/releases/download/%{versio
 
 Patch1:         0001-change-run-dir.patch
 Patch2:         0002-Specify-signed-char.patch
+Patch3:         fix-too-many-argument-for-format.patch
 
 BuildRequires:	gcc gcc-c++ autoconf automake libtool libxml2-devel check-devel perl-interpreter
 BuildRequires:  openssl-devel glib2-devel systemd bash-completion libconfig-devel systemd-devel
@@ -371,6 +372,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Fri Jan 28 2022 wulei <wulei80@huawei.com> - 1.8.0-6
+- fix too many argument for format
+
 * Thu Oct 28 2021 Chenxi Mao <chenxi.mao@suse.com> - 1.8.0-5
 - libstoragemgmt: Upstream patch to avoid char usage in libstoragemgmt.
 
