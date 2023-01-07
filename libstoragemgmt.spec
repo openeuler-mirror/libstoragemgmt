@@ -2,7 +2,7 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.8.0
-Release:	6
+Release:	7
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -10,6 +10,9 @@ Source0:	https://github.com/libstorage/libstoragemgmt/releases/download/%{versio
 
 Patch1:         0001-change-run-dir.patch
 Patch2:		0002-fix-bugfix-when-exec-lsmd-help-attach-daemon.patch
+
+Patch6000:      backport-0001-simarray._block_rounding-Use-integer-division.patch
+Patch6001:      backport-0002-sim_array-volume-fs-_resize-Change-re-size-behavior.patch
 
 BuildRequires:	gcc gcc-c++ autoconf automake libtool libxml2-devel check-devel perl-interpreter
 BuildRequires:  openssl-devel glib2-devel systemd bash-completion libconfig-devel systemd-devel
@@ -371,6 +374,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Sat Jan 7 2023 mengwenhua <mengwenhua@xfusion.com> - 1.8.0-7
+- Sim fs resize
+
 * Tue Jul 27 2021 yannglongkang <yanglongkang@huawei.com> - 1.8.0-6
 - fix bugfix when exec lsmd help attach daemon
 
