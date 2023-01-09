@@ -1,0 +1,29 @@
+From 2ba3527ae5dc345ee91797c6445bb7fe009b02e3 Mon Sep 17 00:00:00 2001
+From: Tony Asleson <tasleson@redhat.com>
+Date: Thu, 23 May 2019 14:35:51 -0500
+Subject: [PATCH 1/2] simarray._block_rounding: Use integer division
+
+This was causing problems for py2 vs. py3 code.  Always use integer
+division.
+
+Signed-off-by: Tony Asleson <tasleson@redhat.com>
+---
+ plugin/sim/simarray.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/plugin/sim/simarray.py b/plugin/sim/simarray.py
+index 6f0a582..bc7817b 100644
+--- a/plugin/sim/simarray.py
++++ b/plugin/sim/simarray.py
+@@ -1268,7 +1268,7 @@ def _check_pool_free_space(self, sim_pool_id, size_bytes):
+ 
+     @staticmethod
+     def _block_rounding(size_bytes):
+-        return (size_bytes + BackStore.BLK_SIZE - 1) / \
++        return (size_bytes + BackStore.BLK_SIZE - 1) // \
+             BackStore.BLK_SIZE * BackStore.BLK_SIZE
+ 
+     def sim_vol_create(self, name, size_bytes, sim_pool_id, is_hw_raid_vol=0):
+-- 
+2.37.3.windows.1
+
