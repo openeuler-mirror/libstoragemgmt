@@ -1,22 +1,15 @@
 %global py2_build_dir %{_builddir}/%{name}-%{version}-%{release}-python2
 %define with_python2 0
 Name:		libstoragemgmt
-Version:	1.8.0
-Release:	7
+Version:	1.9.6
+Release:	1
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
 Source0:	https://github.com/libstorage/libstoragemgmt/releases/download/%{version}/%{name}-%{version}.tar.gz
 
-Patch1:         0001-change-run-dir.patch
-Patch2:         0002-Specify-signed-char.patch
-Patch3:         fix-too-many-argument-for-format.patch
-
-Patch6000:      backport-0001-simarray._block_rounding-Use-integer-division.patch
-Patch6001:      backport-0002-sim_array-volume-fs-_resize-Change-re-size-behavior.patch
-
 BuildRequires:	gcc gcc-c++ autoconf automake libtool libxml2-devel check-devel perl-interpreter
-BuildRequires:  openssl-devel glib2-devel systemd bash-completion libconfig-devel systemd-devel
+BuildRequires:  glib2-devel systemd bash-completion libconfig-devel systemd-devel
 BuildRequires:  procps sqlite-devel python3-six python3-devel systemd systemd-devel chrpath valgrind
 %{?systemd_requires}
 	
@@ -70,7 +63,6 @@ Python2 for libstoragemgmt-clibs.
 %package     -n python3-libstoragemgmt
 Summary:        python3 for libstoragemgmt
 Requires:       %{name} = %{version}-%{release} python3-libstoragemgmt-clibs
-BuildArch:      noarch
 
 %{?python_provide:%python_provide python3-%{name}}
 
@@ -134,7 +126,6 @@ Udev files for %{name}.
 
 %package        nfs-plugin
 Summary:        Files for NFS local filesystem support for %{name}
-BuildArch:      noarch
 Requires:       python3-%{name} = %{version} nfs-utils 
 Requires(post): python3-%{name} = %{version}
 Requires(postun): python3-%{name} = %{version}
@@ -142,9 +133,8 @@ Requires(postun): python3-%{name} = %{version}
 %description    nfs-plugin
 Files for NFS local filesystem support for %{name}
 
-
 %package        nfs-plugin-clibs
-Summary:        clibs package for nfs-plugin	
+Summary:        clibs package for nfs-plugin
 Requires:       %{name} = %{version}-%{release}
 
 %description    nfs-plugin-clibs
@@ -305,24 +295,38 @@ fi
 %{_libexecdir}/lsm.d/*.py*
 %config(noreplace) %{_sysconfdir}/lsm/pluginconf.d/sim.conf
 %{_bindir}/sim_lsmplugin
-%dir %{python3_sitelib}/lsm
-%{python3_sitelib}/lsm/*.py
-%{python3_sitelib}/lsm/__pycache__/
-%{python3_sitelib}/lsm/external/*
-%{python3_sitelib}/lsm/lsmcli/*
-%{python3_sitelib}/lsm/plugin/sim/*
-%{python3_sitelib}/lsm/plugin/__init__.py
-%{python3_sitelib}/lsm/plugin/__pycache__/
+%dir %{python3_sitearch}/lsm
+%{python3_sitearch}/lsm/*.py
+%{python3_sitearch}/lsm/__pycache__/
+%{python3_sitearch}/lsm/lsmcli/*
+%dir %{python3_sitearch}/sim_plugin
+%{python3_sitearch}/sim_plugin/__pycache__/
+%{python3_sitearch}/sim_plugin/__init__.*
+%{python3_sitearch}/sim_plugin/simulator.*
+%{python3_sitearch}/sim_plugin/simarray.*
 
 %files        -n python3-%{name}-clibs
 %defattr(-,root,root)
-%{python3_sitelib}/lsm/_clib.*
+%{python3_sitearch}/lsm/_clib.*
 
 %files           smis-plugin
 %defattr(-,root,root)
-%dir %{python3_sitelib}/lsm/plugin/smispy
+%dir %{python3_sitelib}/smispy_plugin
+%dir %{python3_sitelib}/smispy_plugin/__pycache__
+%{python3_sitelib}/smispy_plugin/__pycache__/*
+%{python3_sitelib}/smispy_plugin/__init__.*
+%{python3_sitelib}/smispy_plugin/smis.*
+%{python3_sitelib}/smispy_plugin/dmtf.*
+%{python3_sitelib}/smispy_plugin/utils.*
+%{python3_sitelib}/smispy_plugin/smis_common.*
+%{python3_sitelib}/smispy_plugin/smis_cap.*
+%{python3_sitelib}/smispy_plugin/smis_sys.*
+%{python3_sitelib}/smispy_plugin/smis_pool.*
+%{python3_sitelib}/smispy_plugin/smis_disk.*
+%{python3_sitelib}/smispy_plugin/smis_vol.*
+%{python3_sitelib}/smispy_plugin/smis_ag.*
 %{_bindir}/smispy_lsmplugin
-%{python3_sitelib}/lsm/plugin/smispy/*
+%{_mandir}/man1/smispy_lsmplugin.1*
 
 %files           netapp-plugin
 %defattr(-,root,root)
@@ -330,27 +334,41 @@ fi
 %config(noreplace) %{_sysconfdir}/lsm/pluginconf.d/hpsa.conf
 %config(noreplace) %{_sysconfdir}/lsm/pluginconf.d/arcconf.conf
 %config(noreplace) %{_sysconfdir}/lsm/pluginconf.d/local.conf
-%{_bindir}/ontap_lsmplugin
 %{_bindir}/targetd_lsmplugin
-%{_bindir}/nstor_lsmplugin
 %{_bindir}/megaraid_lsmplugin
 %{_bindir}/hpsa_lsmplugin
 %{_bindir}/arcconf_lsmplugin
 %{_bindir}/local_lsmplugin
-%dir %{python3_sitelib}/lsm/plugin/ontap
-%{python3_sitelib}/lsm/plugin/ontap/*
-%dir %{python3_sitelib}/lsm/plugin/targetd
-%{python3_sitelib}/lsm/plugin/targetd/*
-%dir %{python3_sitelib}/lsm/plugin/nstor
-%{python3_sitelib}/lsm/plugin/nstor/*
-%dir %{python3_sitelib}/lsm/plugin/megaraid
-%{python3_sitelib}/lsm/plugin/megaraid/*
-%dir %{python3_sitelib}/lsm/plugin/hpsa
-%{python3_sitelib}/lsm/plugin/hpsa/*
-%dir %{python3_sitelib}/lsm/plugin/arcconf
-%{python3_sitelib}/lsm/plugin/arcconf/*
-%dir %{python3_sitelib}/lsm/plugin/local
-%{python3_sitelib}/lsm/plugin/local/*
+%{python3_sitelib}/hpsa_plugin/__pycache__/*
+%{python3_sitelib}/hpsa_plugin/__init__.*
+%{python3_sitelib}/hpsa_plugin/hpsa.*
+%{python3_sitelib}/hpsa_plugin/utils.*
+%{_mandir}/man1/hpsa_lsmplugin.1*
+%dir %{python3_sitelib}/arcconf_plugin
+%dir %{python3_sitelib}/arcconf_plugin/__pycache__
+%{python3_sitelib}/arcconf_plugin/__pycache__/*
+%{python3_sitelib}/arcconf_plugin/__init__.*
+%{python3_sitelib}/arcconf_plugin/arcconf.*
+%{python3_sitelib}/arcconf_plugin/utils.*
+%dir %{python3_sitelib}/local_plugin
+%dir %{python3_sitelib}/local_plugin/__pycache__
+%{python3_sitelib}/local_plugin/__pycache__/*
+%{python3_sitelib}/local_plugin/__init__.*
+%{python3_sitelib}/local_plugin/local.*
+%{_mandir}/man1/local_lsmplugin.1*
+%dir %{python3_sitelib}/megaraid_plugin
+%dir %{python3_sitelib}/megaraid_plugin/__pycache__
+%{python3_sitelib}/megaraid_plugin/__pycache__/*
+%{python3_sitelib}/megaraid_plugin/__init__.*
+%{python3_sitelib}/megaraid_plugin/megaraid.*
+%{python3_sitelib}/megaraid_plugin/utils.*
+%{_mandir}/man1/megaraid_lsmplugin.1*
+%dir %{python3_sitelib}/targetd_plugin
+%dir %{python3_sitelib}/targetd_plugin/__pycache__
+%{python3_sitelib}/targetd_plugin/__pycache__/*
+%{python3_sitelib}/targetd_plugin/__init__.*
+%{python3_sitelib}/targetd_plugin/targetd.*
+%{_mandir}/man1/targetd_lsmplugin.1*
 
 %files           udev
 %defattr(-,root,root)
@@ -361,13 +379,15 @@ fi
 %defattr(-,root,root)
 %config(noreplace) %{_sysconfdir}/lsm/pluginconf.d/nfs.conf
 %{_bindir}/nfs_lsmplugin
-%dir %{python3_sitelib}/lsm/plugin/nfs
-%{python3_sitelib}/lsm/plugin/nfs/__pycache__/*
-%{python3_sitelib}/lsm/plugin/nfs/__init__.*
-%{python3_sitelib}/lsm/plugin/nfs/nfs.*
+%dir %{python3_sitearch}/nfs_plugin
+%dir %{python3_sitearch}/nfs_plugin/__pycache__
+%{python3_sitearch}/nfs_plugin/__pycache__/*
+%{python3_sitearch}/nfs_plugin/__init__.*
+%{python3_sitearch}/nfs_plugin/nfs.*
+%{_mandir}/man1/nfs_lsmplugin.1*
 
-%files           nfs-plugin-clibs
-%{python3_sitelib}/lsm/plugin/nfs/nfs_clib.*
+%files          nfs-plugin-clibs
+%{python3_sitearch}/nfs_plugin/nfs_clib.*
 
 %files           help
 %defattr(-,root,root)
@@ -375,6 +395,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Tue Feb 7 2023 xu_ping <xuping33@h-partners.com> - 1.9.6-1
+- Upgrade 1.9.6
+
 * Sat Jan 7 2023 mengwenhua <mengwenhua@xfusion.com> - 1.8.0-7
 - Sim fs resize
 
