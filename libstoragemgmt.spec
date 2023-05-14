@@ -2,7 +2,7 @@
 %define with_python2 0
 Name:		libstoragemgmt
 Version:	1.9.6
-Release:	1
+Release:	2
 Summary:	Storage array management library
 License:	LGPLv2+
 URL:		https://github.com/libstorage/libstoragemgmt
@@ -146,6 +146,10 @@ clibs package for nfs-plugi
 %autosetup -n %{name}-%{version} -p1
 
 %build
+%if "%toolchain" == "clang"
+	export CFLAGS="$CFLAGS -Wno-ignored-attributes -Wno-varargs -Wno-string-plus-int -Wno-header-guard"
+	export CXXFLAGS="$CXXFLAGS -Wno-ignored-attributes -Wno-varargs -Wno-string-plus-int -Wno-header-guard"
+%endif
 ./autogen.sh
 %if 0%{?with_python2}	
 rm -fr %{py2_build_dir}
@@ -395,6 +399,9 @@ fi
 %{_mandir}/man*/*
 
 %changelog
+* Sat May 06 2023 yoo <sunyuechi@iscas.ac.cn> - 1.9.6-2
+- fix clang build error
+
 * Tue Feb 7 2023 xu_ping <xuping33@h-partners.com> - 1.9.6-1
 - Upgrade 1.9.6
 
